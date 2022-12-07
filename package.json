@@ -1,0 +1,17 @@
+{
+  "name": "tech-test",
+  "version": "1.0.0",
+  "description": "ITECH Global Solutions technical test",
+  "main": "index.js",
+  "scripts": {
+    "client": "npm start --prefix client",
+    "server": "nodemon server/server.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "ITECH Global Solutions",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.19.1"
+  }
+}

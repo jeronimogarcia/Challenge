@@ -1,0 +1,4 @@
+node_modules/
+client/build/
+debug.log
+.vscode
