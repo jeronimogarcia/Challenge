@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import TableDisplay from '../components/TableDisplay'
 import Pagination from './Pagination'
+import { BsFillArrowUpSquareFill, BsFillArrowDownSquareFill } from 'react-icons/bs'
 
 let queryParam = parseInt(window.location.pathname.split('/')[2])
-if(queryParam < 1 || queryParam > 10) queryParam = 1;
+if (queryParam < 1 || queryParam > 10) queryParam = 1;
 // TODO Try to find a better way. Hardcoded
 
 
@@ -14,18 +15,18 @@ const UsersTable = () => {
   const [currentPage, setCurrentPage] = useState(queryParam)
 
   const handlePrevPage = () => {
-    if (currentPage > 1){
+    if (currentPage > 1) {
       setCurrentPage(prevState => prevState - 1)
     }
   }
-  
-  const handleNextPage= () => {
+
+  const handleNextPage = () => {
     if (currentPage < numberOfPages.length) {
       setCurrentPage(prevState => prevState + 1)
     }
   }
 
-  const handleOnClickPage= (number) => {
+  const handleOnClickPage = (number) => {
     setCurrentPage(number)
   }
 
@@ -41,25 +42,52 @@ const UsersTable = () => {
 
   return (
     <div className='mr-8 ml-8 mt-8 pb-8 flex flex-col items-center'>
-      <Pagination 
-      numberOfPages={ numberOfPages } 
-      handlePrevPage= { handlePrevPage }
-      handleNextPage= { handleNextPage }
-      handleOnClickPage= { handleOnClickPage }
-      currentPage = {currentPage}
+      <Pagination
+        numberOfPages={numberOfPages}
+        handlePrevPage={handlePrevPage}
+        handleNextPage={handleNextPage}
+        handleOnClickPage={handleOnClickPage}
+        currentPage={currentPage}
       />
       <table className='border-collapse w-[60%]'>
         <thead className='text-left'>
-          <tr className='h-[28px]'>
+          <tr className='h-[28px] text-xl'>
             <th className='w-[15%]'>Avatar</th>
-            <th>Nombre</th>
-            <th className='w-[25%]'>Apellido</th>
-            <th className='w-[30%]'>Fecha Registro</th>
+
+            <th className='w-[30%]'>
+              <span>Name</span>
+              <button className='mx-1 relative top-[2px]'>
+                <BsFillArrowUpSquareFill className='text-[rgb(154,25,130)] hover:bg-yellow-300' />
+              </button>
+              <button className='relative top-[2px]'>
+                <BsFillArrowDownSquareFill className='text-[rgb(154,25,130)] hover:bg-yellow-300' />
+              </button>
+            </th>
+
+            <th className='w-[30%]'>
+              <span>Surname</span>
+              <button className='mx-1 relative top-[2px]'>
+                <BsFillArrowUpSquareFill className='text-[rgb(154,25,130)] hover:bg-yellow-300' />
+              </button>
+              <button>
+                <BsFillArrowDownSquareFill className='relative top-[2px] text-[rgb(154,25,130)] hover:bg-yellow-300' />
+              </button>
+            </th>
+
+            <th className='w-[25%]'>
+              <span> Register Date</span>
+              <button className='mx-1 relative top-[2px]'>
+                <BsFillArrowUpSquareFill className='text-[rgb(154,25,130)] hover:bg-yellow-300' />
+              </button>
+              <button className='relative top-[2px]'>
+                <BsFillArrowDownSquareFill className='text-[rgb(154,25,130)] hover:bg-yellow-300' />
+              </button>
+            </th>
           </tr>
         </thead>
         <tbody>
           {usersList.map((user) => {
-            return <TableDisplay key={user.id} user={user}/>
+            return <TableDisplay key={user.id} user={user} />
           })}
         </tbody>
       </table>
