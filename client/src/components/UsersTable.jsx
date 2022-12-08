@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react'
 import TableDisplay from '../components/TableDisplay'
 import Pagination from './Pagination'
 
+let queryParam = parseInt(window.location.pathname.split('/')[2].split('=')[1])
+if(queryParam < 1 || queryParam > 10) queryParam = 1;
+// TODO Try to find a better way. Hardcoded
+
+
 const UsersTable = () => {
-
-
 
   const [usersList, setUsersList] = useState([])
   const [numberOfPages, setNumberOfPages] = useState([])
-  const [currentPage, setCurrentPage] = useState(1)
-
-  // TODO Check URL PARAM NUMBER WITH CURRENTPAGE (STATE)
-  // TODO Check location.pathname // location.pathname.split("/")
+  const [currentPage, setCurrentPage] = useState(queryParam)
 
   const handlePrevPage = () => {
     if (currentPage > 1){
@@ -30,12 +30,12 @@ const UsersTable = () => {
   }
 
   useEffect(() => {
-    fetch(`/api/pagination/${currentPage}`)
+    fetch(`/api/?page=${currentPage}`)
       .then(res => res.json())
       .then(data => {
         setUsersList(data.responseObject.users)
         setNumberOfPages(data.responseObject.size)
-        window.history.replaceState(null, null, `/api/pagination/${currentPage}`)
+        window.history.replaceState(null, null, `/api/page=${data.responseObject.page}`)
       })
   }, [currentPage])
 
@@ -46,20 +46,21 @@ const UsersTable = () => {
       handlePrevPage= { handlePrevPage }
       handleNextPage= { handleNextPage }
       handleOnClickPage= { handleOnClickPage }
+      currentPage = {currentPage}
       />
       <div>{currentPage}</div>
       <table className='border-collapse w-[60%]'>
         <thead className='text-left'>
           <tr className='h-[28px]'>
-            <th className='pr-7'>Avatar</th>
-            <th className='pr-7'>Nombre</th>
-            <th className='pr-7'>Apellido</th>
-            <th className='w-[200px]'>Fecha Registro</th>
+            <th className='w-[15%]'>Avatar</th>
+            <th>Nombre</th>
+            <th className='w-[25%]'>Apellido</th>
+            <th className='w-[30%]'>Fecha Registro</th>
           </tr>
         </thead>
         <tbody>
           {usersList.map((user) => {
-            return <TableDisplay key={user.id} user={user} />
+            return <TableDisplay key={user.id} user={user}/>
           })}
         </tbody>
       </table>
