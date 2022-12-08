@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import TableDisplay from '../components/TableDisplay'
 import Pagination from './Pagination'
 
-let queryParam = parseInt(window.location.pathname.split('/')[2].split('=')[1])
+let queryParam = parseInt(window.location.pathname.split('/')[2])
 if(queryParam < 1 || queryParam > 10) queryParam = 1;
 // TODO Try to find a better way. Hardcoded
 
@@ -30,12 +30,12 @@ const UsersTable = () => {
   }
 
   useEffect(() => {
-    fetch(`/api/?page=${currentPage}`)
+    fetch(`/users/?page=${currentPage}`)
       .then(res => res.json())
       .then(data => {
         setUsersList(data.responseObject.users)
         setNumberOfPages(data.responseObject.size)
-        window.history.replaceState(null, null, `/api/page=${data.responseObject.page}`)
+        window.history.replaceState(null, null, `/users/${data.responseObject.page}`)
       })
   }, [currentPage])
 
@@ -48,7 +48,6 @@ const UsersTable = () => {
       handleOnClickPage= { handleOnClickPage }
       currentPage = {currentPage}
       />
-      <div>{currentPage}</div>
       <table className='border-collapse w-[60%]'>
         <thead className='text-left'>
           <tr className='h-[28px]'>

@@ -24,7 +24,7 @@ const responseObject = {
 
 http.createServer(app).listen(5000);
 
-app.get("/api/:page?", (req, res) => {
+app.get("/users/:page?", (req, res) => {
     
     // Parse URL elements
     const queryObject = url.parse(req.url);
@@ -51,6 +51,6 @@ app.get("/api/:page?", (req, res) => {
 
     // Pasamos el total maximo de paginas
     responseObject.page = page
-    
+
     res.json({ responseObject })
 })
