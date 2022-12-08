@@ -4,15 +4,15 @@ const http = require("http");
 const app = express();
 
 // Importamos el array del archivo JSON
-const usersList = require('./data/users.json')
+let usersList = require('./data/users.json')
 const url = require('url');
-
+const originalList = [ ...usersList ]
 // Maximo de users
 const maxUsers = 10
 
 // Numero maximo de paginas
 const pages = []
-for( let i = 1; i<= Math.ceil(usersList.length/maxUsers); i++){
+for (let i = 1; i <= Math.ceil(usersList.length / maxUsers); i++) {
     pages.push(i)
 }
 
@@ -24,28 +24,51 @@ const responseObject = {
 
 http.createServer(app).listen(5000);
 
-app.get("/users/:page?", (req, res) => {
-    
+app.get("/users/:page?/:orderName?", (req, res) => {
+
     // Parse URL elements
     const queryObject = url.parse(req.url);
     const querystring = require('querystring');
+
+    console.log(queryObject)
 
     // Obtenemos el query
     const qs = queryObject.query;
     const stringQuery = querystring.parse(qs)
 
+    console.log(stringQuery)
     // Valor del query page
     const page = stringQuery.page
+    const order = stringQuery.orderName
+
+    console.log(order)
+
+
+    if (order === 'asc') {
+        usersList.sort(function (a, b) {
+            if (a.name < b.name) { return -1; }
+            if (a.name > b.name) { return 1; }
+            return 0;
+        })
+    } else if (order === 'dsc') {
+        usersList.sort(function (a, b) {
+            if (a.name < b.name) { return 1; }
+            if (a.name > b.name) { return -1; }
+            return 0;
+        })
+    } else if (order === ''){
+        usersList = [...originalList]
+    }
+
 
     // Multiplicador de pagina * 10. Ejemplo, pagina 2 = 20
     const multiplier = page * maxUsers
     // Index final donde cortar el array
     const end = multiplier
     // Index inicial de donde arranca el array
-    const start = multiplier - maxUsers 
+    const start = multiplier - maxUsers
     // Cortamos el array para mostrar 10 usuarios dependiendo la pagina
     const newObject = usersList.slice(start, end)
-
     // Modificamos el objeto de respueta con el array cortado
     responseObject.users = newObject
 
