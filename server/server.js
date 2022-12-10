@@ -69,7 +69,7 @@ app.get("/users/:page?/:orderKey?/:order?", (req, res) => {
                 return 0;
             })
         }
-    }else if (key == 'date') {
+    }else if (key == 'createAt') {
         if (order === 'asc') {
             usersList.sort(function (a, b) {
                 if (a.createdAt < b.createdAt) { return -1; }
@@ -87,23 +87,6 @@ app.get("/users/:page?/:orderKey?/:order?", (req, res) => {
     else {
         usersList = [...originalList]
     }
-
-    // if (order === 'asc') {
-    //     usersList.sort(function (a, b) {
-    //         if (a.name < b.name) { return -1; }
-    //         if (a.name > b.name) { return 1; }
-    //         return 0;
-    //     })
-    // } else if (order === 'dsc') {
-    //     usersList.sort(function (a, b) {
-    //         if (a.name < b.name) { return 1; }
-    //         if (a.name > b.name) { return -1; }
-    //         return 0;
-    //     })
-    // } else if (order === ''){
-    //     usersList = [...originalList]
-    // }
-
 
     // Multiplicador de pagina * 10. Ejemplo, pagina 2 = 20
     const multiplier = page * maxUsers

@@ -104,12 +104,12 @@ const UsersTable = () => {
               <span> Register Date</span>
               <button className='mx-1 relative top-[2px]'>
                 <BsFillArrowUpSquareFill
-                onClick={() => handleOrderName("date", "asc", 5)}
+                onClick={() => handleOrderName("createAt", "asc", 5)}
                 className={`text-[rgb(154,25,130)] hover:bg-yellow-300 ${orderToogle === 5 && "bg-yellow-300 text-black"}`} />
               </button>
               <button className='relative top-[2px]'>
                 <BsFillArrowDownSquareFill
-                onClick={() => handleOrderName("date", "dsc", 6)}
+                onClick={() => handleOrderName("createAt", "dsc", 6)}
                 className={`text-[rgb(154,25,130)] hover:bg-yellow-300 ${orderToogle === 6 && "bg-yellow-300 text-black"}`} />
               </button>
             </th>
