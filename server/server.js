@@ -41,50 +41,21 @@ app.get("/users/:page?/:orderKey?/:order?", (req, res) => {
     const key = stringQuery.orderKey
     const order = stringQuery.order
 
-    if (key == 'name') {
+    if (key) {
         if (order === 'asc') {
             usersList.sort(function (a, b) {
-                if (a.name < b.name) { return -1; }
-                if (a.name > b.name) { return 1; }
+                if (a[key] < b[key]) { return -1; }
+                if (a[key] > b[key]) { return 1; }
                 return 0;
             })
         } else {
             usersList.sort(function (a, b) {
-                if (a.name < b.name) { return 1; }
-                if (a.name > b.name) { return -1; }
+                if (a[key] < b[key]) { return 1; }
+                if (a[key] > b[key]) { return -1; }
                 return 0;
             })
         }
-    } else if (key == 'surname') {
-        if (order === 'asc') {
-            usersList.sort(function (a, b) {
-                if (a.surname < b.surname) { return -1; }
-                if (a.surname > b.surname) { return 1; }
-                return 0;
-            })
-        } else {
-            usersList.sort(function (a, b) {
-                if (a.surname < b.surname) { return 1; }
-                if (a.surname > b.surname) { return -1; }
-                return 0;
-            })
-        }
-    }else if (key == 'createAt') {
-        if (order === 'asc') {
-            usersList.sort(function (a, b) {
-                if (a.createdAt < b.createdAt) { return -1; }
-                if (a.createdAt > b.createdAt) { return 1; }
-                return 0;
-            })
-        } else {
-            usersList.sort(function (a, b) {
-                if (a.createdAt < b.createdAt) { return 1; }
-                if (a.createdAt > b.createdAt) { return -1; }
-                return 0;
-            })
-        }
-    }
-    else {
+    } else {
         usersList = [...originalList]
     }
 
