@@ -14,7 +14,8 @@ const UsersTable = () => {
   const [usersList, setUsersList] = useState([])
   const [numberOfPages, setNumberOfPages] = useState([])
   const [currentPage, setCurrentPage] = useState(urlParameter)
-  const [orderName, setOrderName] = useState('')
+  const [key, setKey] = useState('')
+  const [order, setOrder] = useState('')
   const [orderToogle, setOrderToogle] = useState(null)
 
   const handlePrevPage = () => {
@@ -33,27 +34,28 @@ const UsersTable = () => {
     setCurrentPage(number)
   }
 
-  const handleOrderName = (order) => {
-    if (orderName === order) {
-      setOrderName('')
+  const handleOrderName = (keyName, orderName, toogleNumber) => {
+    if (orderName === order && keyName === key) {
+      setKey('')
+      setOrder('')
       setOrderToogle(null)
     } else {
-      setOrderName(order)
-      setOrderToogle(order)
+      setKey(keyName)
+      setOrder(orderName)
+      setOrderToogle(toogleNumber)
     }
   }
 
 
   useEffect(() => {
-    fetch(`/users/?page=${currentPage}&orderName=${orderName}`)
+    fetch(`/users/?page=${currentPage}&orderKey=${key}&order=${order}`)
       .then(res => res.json())
       .then(data => {
         setUsersList(data.responseObject.users)
         setNumberOfPages(data.responseObject.size)
-        window.history.replaceState(null, null, `/users/${data.responseObject.page}`)
-        // TODO PUSH ROUTE TO USERS 1
+        window.history.replaceState(null, null, `/users/${data.responseObject.page}${key && `/${key}=${order}`}`)
       })
-  }, [currentPage, orderName])
+  }, [currentPage, key, order])
 
   return (
     <div className='mr-8 ml-8 mt-8 pb-8 flex flex-col items-center'>
@@ -73,34 +75,42 @@ const UsersTable = () => {
               <span>Name</span>
               <button className='mx-1 relative top-[2px]'>
                 <BsFillArrowUpSquareFill
-                  onClick={() => handleOrderName("asc")}
-                  className={`text-[rgb(154,25,130)] hover:bg-yellow-300 ${orderToogle === 'asc' && "bg-yellow-300 text-black"}`}
+                  onClick={() => handleOrderName("name", "asc", 1)}
+                  className={`text-[rgb(154,25,130)] hover:bg-yellow-300 ${orderToogle === 1 && "bg-yellow-300 text-black"}`}
                 />
               </button>
               <button className='relative top-[2px]'>
                 <BsFillArrowDownSquareFill
-                  onClick={() => handleOrderName("dsc")}
-                  className={`text-[rgb(154,25,130)] hover:bg-yellow-300 ${orderToogle === 'dsc' && "bg-yellow-300 text-black"}`} />
+                  onClick={() => handleOrderName("name", "dsc", 2)}
+                  className={`text-[rgb(154,25,130)] hover:bg-yellow-300 ${orderToogle === 2 && "bg-yellow-300 text-black"}`} />
               </button>
             </th>
 
             <th className='w-[30%]'>
               <span>Surname</span>
               <button className='mx-1 relative top-[2px]'>
-                <BsFillArrowUpSquareFill className='text-[rgb(154,25,130)] hover:bg-yellow-300' />
+                <BsFillArrowUpSquareFill
+                onClick={() => handleOrderName("surname", "asc", 3)}
+                className={`text-[rgb(154,25,130)] hover:bg-yellow-300 ${orderToogle === 3 && "bg-yellow-300 text-black"}`} />
               </button>
               <button>
-                <BsFillArrowDownSquareFill className='relative top-[2px] text-[rgb(154,25,130)] hover:bg-yellow-300' />
+                <BsFillArrowDownSquareFill
+                onClick={() => handleOrderName("surname", "dsc", 4)}
+                className={`relative top-[2px] text-[rgb(154,25,130)] hover:bg-yellow-300 ${orderToogle === 4 && "bg-yellow-300 text-black"}`} />
               </button>
             </th>
 
             <th className='w-[25%]'>
               <span> Register Date</span>
               <button className='mx-1 relative top-[2px]'>
-                <BsFillArrowUpSquareFill className='text-[rgb(154,25,130)] hover:bg-yellow-300' />
+                <BsFillArrowUpSquareFill
+                onClick={() => handleOrderName("date", "asc", 5)}
+                className={`text-[rgb(154,25,130)] hover:bg-yellow-300 ${orderToogle === 5 && "bg-yellow-300 text-black"}`} />
               </button>
               <button className='relative top-[2px]'>
-                <BsFillArrowDownSquareFill className='text-[rgb(154,25,130)] hover:bg-yellow-300' />
+                <BsFillArrowDownSquareFill
+                onClick={() => handleOrderName("date", "dsc", 6)}
+                className={`text-[rgb(154,25,130)] hover:bg-yellow-300 ${orderToogle === 6 && "bg-yellow-300 text-black"}`} />
               </button>
             </th>
           </tr>

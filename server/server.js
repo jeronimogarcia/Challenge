@@ -6,7 +6,7 @@ const app = express();
 // Importamos el array del archivo JSON
 let usersList = require('./data/users.json')
 const url = require('url');
-const originalList = [ ...usersList ]
+const originalList = [...usersList]
 // Maximo de users
 const maxUsers = 10
 
@@ -24,13 +24,12 @@ const responseObject = {
 
 http.createServer(app).listen(5000);
 
-app.get("/users/:page?/:orderName?", (req, res) => {
+app.get("/users/:page?/:orderKey?/:order?", (req, res) => {
 
     // Parse URL elements
     const queryObject = url.parse(req.url);
     const querystring = require('querystring');
 
-    console.log(queryObject)
 
     // Obtenemos el query
     const qs = queryObject.query;
@@ -39,26 +38,71 @@ app.get("/users/:page?/:orderName?", (req, res) => {
     console.log(stringQuery)
     // Valor del query page
     const page = stringQuery.page
-    const order = stringQuery.orderName
+    const key = stringQuery.orderKey
+    const order = stringQuery.order
 
-    console.log(order)
-
-
-    if (order === 'asc') {
-        usersList.sort(function (a, b) {
-            if (a.name < b.name) { return -1; }
-            if (a.name > b.name) { return 1; }
-            return 0;
-        })
-    } else if (order === 'dsc') {
-        usersList.sort(function (a, b) {
-            if (a.name < b.name) { return 1; }
-            if (a.name > b.name) { return -1; }
-            return 0;
-        })
-    } else if (order === ''){
+    if (key == 'name') {
+        if (order === 'asc') {
+            usersList.sort(function (a, b) {
+                if (a.name < b.name) { return -1; }
+                if (a.name > b.name) { return 1; }
+                return 0;
+            })
+        } else {
+            usersList.sort(function (a, b) {
+                if (a.name < b.name) { return 1; }
+                if (a.name > b.name) { return -1; }
+                return 0;
+            })
+        }
+    } else if (key == 'surname') {
+        if (order === 'asc') {
+            usersList.sort(function (a, b) {
+                if (a.surname < b.surname) { return -1; }
+                if (a.surname > b.surname) { return 1; }
+                return 0;
+            })
+        } else {
+            usersList.sort(function (a, b) {
+                if (a.surname < b.surname) { return 1; }
+                if (a.surname > b.surname) { return -1; }
+                return 0;
+            })
+        }
+    }else if (key == 'date') {
+        if (order === 'asc') {
+            usersList.sort(function (a, b) {
+                if (a.createdAt < b.createdAt) { return -1; }
+                if (a.createdAt > b.createdAt) { return 1; }
+                return 0;
+            })
+        } else {
+            usersList.sort(function (a, b) {
+                if (a.createdAt < b.createdAt) { return 1; }
+                if (a.createdAt > b.createdAt) { return -1; }
+                return 0;
+            })
+        }
+    }
+    else {
         usersList = [...originalList]
     }
+
+    // if (order === 'asc') {
+    //     usersList.sort(function (a, b) {
+    //         if (a.name < b.name) { return -1; }
+    //         if (a.name > b.name) { return 1; }
+    //         return 0;
+    //     })
+    // } else if (order === 'dsc') {
+    //     usersList.sort(function (a, b) {
+    //         if (a.name < b.name) { return 1; }
+    //         if (a.name > b.name) { return -1; }
+    //         return 0;
+    //     })
+    // } else if (order === ''){
+    //     usersList = [...originalList]
+    // }
 
 
     // Multiplicador de pagina * 10. Ejemplo, pagina 2 = 20
