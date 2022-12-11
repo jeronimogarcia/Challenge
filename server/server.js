@@ -1,28 +1,29 @@
 const express = require("express");
 const http = require("http");
-
+const url = require('url');
 const app = express();
+http.createServer(app).listen(5000);
+
 
 // Importamos el array del archivo JSON
 let usersList = require('./data/users.json')
-const url = require('url');
+// Copia original del array
 const originalList = [...usersList]
-// Maximo de users
+
+// Máximo de users por página
 const maxUsers = 10
 
-// Numero maximo de paginas
+// Número máximo de páginas
 const pages = []
 for (let i = 1; i <= Math.ceil(usersList.length / maxUsers); i++) {
     pages.push(i)
 }
 
-// Creamos el objeto de respueta con el array y el numero maximo de paginas
+// Creamos el objeto de respueta con el array y el numero máximo de páginas
 const responseObject = {
     users: usersList,
     size: pages
 }
-
-http.createServer(app).listen(5000);
 
 app.get("/users/:page?/:orderKey?/:order?", (req, res) => {
 
@@ -30,18 +31,18 @@ app.get("/users/:page?/:orderKey?/:order?", (req, res) => {
     const queryObject = url.parse(req.url);
     const querystring = require('querystring');
 
-
     // Obtenemos el query
     const qs = queryObject.query;
     const stringQuery = querystring.parse(qs)
 
-    console.log(stringQuery)
+    // console.log(stringQuery)
 
-    // Valor del query page
+    // Valores de los query (número de página, key del ordenamiento y forma de ordenamiento: ascendente o descendente)
     const page = stringQuery.page
     const key = stringQuery.orderKey
     const order = stringQuery.order
 
+    // Función de ordenamiento dependiendo la key que recibe 
     if (key) {
         if (order === 'asc') {
             usersList.sort(function (a, b) {
@@ -60,18 +61,18 @@ app.get("/users/:page?/:orderKey?/:order?", (req, res) => {
         usersList = [...originalList]
     }
 
-    // Multiplicador de pagina * 10. Ejemplo, pagina 2 = 20
+    // Multiplicador de página * máximo de users por página. Ejemplo, pagina 2 = 20
     const multiplier = page * maxUsers
     // Index final donde cortar el array
     const end = multiplier
     // Index inicial de donde arranca el array
     const start = multiplier - maxUsers
-    // Cortamos el array para mostrar 10 usuarios dependiendo la pagina
+    // Cortamos el array para mostrar 10 usuarios dependiendo la página
     const newObject = usersList.slice(start, end)
     // Modificamos el objeto de respueta con el array cortado
     responseObject.users = newObject
 
-    // Pasamos el total maximo de paginas
+    // Pasamos el total máximo de páginas
     responseObject.page = page
 
     res.json({ responseObject })
