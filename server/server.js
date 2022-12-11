@@ -10,18 +10,6 @@ let usersList = require('./data/users.json')
 // Copia original del array
 const originalList = [...usersList]
 
-// Número máximo de páginas
-// const pages = []
-// for (let i = 1; i <= Math.ceil(usersList.length / maxUsers); i++) {
-//     pages.push(i)
-// }
-
-// Creamos el objeto de respueta con el array y el numero máximo de páginas
-// const responseObject = {
-//     users: usersList,
-//     size: pages
-// }
-
 app.get("/users/:page?/:usersPerPage?:orderKey?/:order?", (req, res) => {
 
     // Parse URL elements
@@ -31,8 +19,6 @@ app.get("/users/:page?/:usersPerPage?:orderKey?/:order?", (req, res) => {
     // Obtenemos el query
     const qs = queryObject.query;
     const stringQuery = querystring.parse(qs)
-
-    console.log(stringQuery)
 
     // Valores de los query (número de página, key del ordenamiento y forma de ordenamiento: ascendente o descendente)
     const page = stringQuery.page
@@ -66,6 +52,7 @@ app.get("/users/:page?/:usersPerPage?:orderKey?/:order?", (req, res) => {
     // Index inicial de donde arranca el array
     const start = multiplier - usersPerPage
 
+    // Array con el numero de paginas
     const pages = []
     for (let i = 1; i <= Math.ceil(usersList.length / usersPerPage); i++) {
         pages.push(i)
@@ -83,12 +70,13 @@ app.get("/users/:page?/:usersPerPage?:orderKey?/:order?", (req, res) => {
     // Modificamos el objeto de respueta con el array cortado
     responseObject.users = newObject
 
-
+    // Usuarios por pagina
     responseObject.usersPerPage = usersPerPage
 
     // Página actual
     responseObject.page = page
 
+    // Fix cuando se modificado el numero maximo de usuarios por paigna
     if (pages.length < page) {
         responseObject.page = pages.length
     }
