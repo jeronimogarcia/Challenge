@@ -2,7 +2,14 @@ import React, { useState } from 'react'
 
 const buttonClass = `w-[100px] py-1 rounded  text-white hover:text-yellow-300 bg-colorLogo`
 
-const Pagination = ({ numberOfPages, handlePrevPage, handleNextPage, handleOnClickPage, currentPage, handleInputValue }) => {
+const Pagination = ({
+  numberOfPages,
+  handlePrevPage, 
+  handleNextPage, 
+  handleOnClickPage, 
+  currentPage, 
+  handleInputValue, 
+  isLoading }) => {
 
   const [inputValue, setInputValue] = useState(10)
 
@@ -10,7 +17,9 @@ const Pagination = ({ numberOfPages, handlePrevPage, handleNextPage, handleOnCli
     <div className='flex flex-col w-[60%]'>
       <div className='flex flex-row justify-between mb-6' >
         <button
-          className={`${buttonClass}`}
+          className=
+          {`${buttonClass} 
+          ${isLoading ? "opacity-70" : "opacity-100"}`}
           onClick={() => handlePrevPage()}>
           Prev Page
         </button>
@@ -20,7 +29,8 @@ const Pagination = ({ numberOfPages, handlePrevPage, handleNextPage, handleOnCli
             <li key={number}>
               <button
                 className={`w-7 h-7 bg-colorLogo rounded text-white font-semibold hover:text-yellow-300 m-[5px]
-            ${currentPage === number && "bg-black text-yellow-300"}`}
+                ${currentPage === number && "bg-black text-yellow-300"}  
+                ${isLoading ? "opacity-70" : "opacity-100"}`}
                 onClick={() => handleOnClickPage(number)}>
                 {number}
               </button>
@@ -28,7 +38,11 @@ const Pagination = ({ numberOfPages, handlePrevPage, handleNextPage, handleOnCli
           )}
         </ul>
 
-        <button className={`${buttonClass}`}
+        <button
+          disabled={isLoading}
+          className=
+          {`${buttonClass} 
+          ${isLoading ? "opacity-70" : "opacity-100"}`}
           onClick={() => handleNextPage()}>
           Next Page
         </button>
@@ -43,9 +57,11 @@ const Pagination = ({ numberOfPages, handlePrevPage, handleNextPage, handleOnCli
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         />
-        <button onClick={() => handleInputValue(inputValue)}
+        <button
+          onClick={() => handleInputValue(inputValue)}
           className={`${buttonClass}`}
-        >Confirm</button>
+          >Confirm
+        </button>
       </div>
     </div>
   )

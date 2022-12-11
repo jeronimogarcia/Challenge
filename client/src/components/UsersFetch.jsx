@@ -17,6 +17,7 @@ const UsersTable = () => {
   const [order, setOrder] = useState('')
   const [orderToogle, setOrderToogle] = useState(null)
   const [inputNumber, setInputNumber] = useState(10)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -53,13 +54,19 @@ const UsersTable = () => {
 
 
   useEffect(() => {
+    setIsLoading(true)
     fetch(`/users/?page=${currentPage}&usersPerPage=${inputNumber}&orderKey=${key}&order=${order}`)
       .then(res => res.json())
       .then(data => {
         setUsersList(data.responseObject.users)
         setNumberOfPages(data.responseObject.size)
-        window.history.replaceState(null, null, `/users/${data.responseObject.page}${key && `/${key}=${order}`}`)
+        handleOnClickPage(parseInt(data.responseObject.page))
+        window.history.replaceState(null, null, `/users/${data.responseObject.page}/${data.responseObject.usersPerPage}${key && `/${key}=${order}`}`)
       })
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+      
   }, [currentPage, key, order, inputNumber])
 
   return (
@@ -71,6 +78,7 @@ const UsersTable = () => {
         handleOnClickPage={handleOnClickPage}
         currentPage={currentPage}
         handleInputValue = {handleInputValue}
+        isLoading = {isLoading}
       />
       <TableFormat 
       usersList = {usersList}

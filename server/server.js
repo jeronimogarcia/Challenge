@@ -83,6 +83,9 @@ app.get("/users/:page?/:usersPerPage?:orderKey?/:order?", (req, res) => {
     // Modificamos el objeto de respueta con el array cortado
     responseObject.users = newObject
 
+
+    responseObject.usersPerPage = usersPerPage
+
     // Página actual
     responseObject.page = page
 
