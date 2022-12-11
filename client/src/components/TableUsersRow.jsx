@@ -1,6 +1,6 @@
 import React from 'react'
 
-const TableDisplay = ({ user }) => {
+const TableUsersRow = ({ user }) => {
 
   const formatDate = () => {
     const date = new Date(user.createdAt).toDateString()
@@ -8,7 +8,7 @@ const TableDisplay = ({ user }) => {
   }
 
   return (
-    <tr className='border-t-2 border-[rgb(154,25,130)]'>
+    <tr className='border-t-2 border-colorLogo'>
       <td><img className='h-[50px] my-[2px]' src={user.avatar} alt="Foto de Avatar" /></td>
       <td>{user.name}</td>
       <td>{user.surname}</td>
@@ -17,4 +17,4 @@ const TableDisplay = ({ user }) => {
   )
 }
 
-export default TableDisplay
+export default TableUsersRow

@@ -36,6 +36,7 @@ app.get("/users/:page?/:orderKey?/:order?", (req, res) => {
     const stringQuery = querystring.parse(qs)
 
     console.log(stringQuery)
+
     // Valor del query page
     const page = stringQuery.page
     const key = stringQuery.orderKey

@@ -1,6 +1,6 @@
 import ComponentTitle from "./components/ComponentTitle";
 import Header from "./components/Header";
-import UsersTable from "./components/UsersTable";
+import UsersFetch from "./components/UsersFetch";
 import "./index.css"
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <div className="bg-[#F9F9F9] relative max-w-[75%] m-auto h-[100vh]">
       <Header />
       <ComponentTitle title='Lista de Usuarios'/>
-      <UsersTable/>
+      <UsersFetch/>
     </div>
   );
 }
