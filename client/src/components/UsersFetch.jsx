@@ -6,6 +6,8 @@ let urlParam = parseInt(window.location.pathname.split('/')[2])
 const urlPage = (urlParam < 1 || urlParam > 10) || !urlParam ? 1 : urlParam
 // TODO Try to find a better way. Hardcoded
 
+const minNumberOfUsersPerPage = 9
+
 const UsersTable = () => {
 
   const [usersList, setUsersList] = useState([])
@@ -14,6 +16,7 @@ const UsersTable = () => {
   const [key, setKey] = useState('')
   const [order, setOrder] = useState('')
   const [orderToogle, setOrderToogle] = useState(null)
+  const [inputNumber, setInputNumber] = useState(10)
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -28,7 +31,7 @@ const UsersTable = () => {
   }
 
   const handleOnClickPage = (number) => {
-    setCurrentPage(number)
+      setCurrentPage(number)
   }
 
   const handleOrderName = (keyName, orderName, toogleNumber) => {
@@ -43,26 +46,31 @@ const UsersTable = () => {
     }
   }
 
+  const handleInputValue = (numberOfUsersPerPage) =>{
+    if (numberOfUsersPerPage > minNumberOfUsersPerPage)
+    setInputNumber(numberOfUsersPerPage)
+  }
+
 
   useEffect(() => {
-    fetch(`/users/?page=${currentPage}&orderKey=${key}&order=${order}`)
+    fetch(`/users/?page=${currentPage}&usersPerPage=${inputNumber}&orderKey=${key}&order=${order}`)
       .then(res => res.json())
       .then(data => {
         setUsersList(data.responseObject.users)
         setNumberOfPages(data.responseObject.size)
         window.history.replaceState(null, null, `/users/${data.responseObject.page}${key && `/${key}=${order}`}`)
-        console.log(window.location.pathname)
       })
-  }, [currentPage, key, order])
+  }, [currentPage, key, order, inputNumber])
 
   return (
-    <div className='mr-8 ml-8 mt-8 pb-8 flex flex-col items-center'>
+    <div className='mt-8 pb-8 flex flex-col items-center bg-[#F9F9F9]'>
       <Pagination
         numberOfPages={numberOfPages}
         handlePrevPage={handlePrevPage}
         handleNextPage={handleNextPage}
         handleOnClickPage={handleOnClickPage}
         currentPage={currentPage}
+        handleInputValue = {handleInputValue}
       />
       <TableFormat 
       usersList = {usersList}

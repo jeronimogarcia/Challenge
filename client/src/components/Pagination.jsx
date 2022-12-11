@@ -1,34 +1,52 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const buttonClass = `w-[100px] py-1 rounded  text-white hover:text-yellow-300 bg-colorLogo`
 
-const Pagination = ({ numberOfPages, handlePrevPage, handleNextPage, handleOnClickPage, currentPage }) => {
+const Pagination = ({ numberOfPages, handlePrevPage, handleNextPage, handleOnClickPage, currentPage, handleInputValue }) => {
+
+  const [inputValue, setInputValue] = useState(10)
+
   return (
-    <div className='flex flex-row w-[60%] justify-between mb-8'>
+    <div className='flex flex-col w-[60%]'>
+      <div className='flex flex-row justify-between mb-6' >
+        <button
+          className={`${buttonClass}`}
+          onClick={() => handlePrevPage()}>
+          Prev Page
+        </button>
 
-      <button 
-      className={`${buttonClass}`}
-      onClick={() => handlePrevPage()}>
-      Prev Page
-      </button>
+        <ul className='flex flex-row w-[50%] justify-center items-center'>
+          {numberOfPages.map((number) =>
+            <li key={number}>
+              <button
+                className={`w-7 h-7 bg-colorLogo rounded text-white font-semibold hover:text-yellow-300 m-[5px]
+            ${currentPage === number && "bg-black text-yellow-300"}`}
+                onClick={() => handleOnClickPage(number)}>
+                {number}
+              </button>
+            </li>
+          )}
+        </ul>
 
-      <ul className='flex flex-row w-[50%] justify-between items-center'>
-        {numberOfPages.map((number) =>
-          <li key={number}>
-            <button 
-            className={`w-7 h-7 bg-colorLogo rounded text-white font-semibold hover:text-yellow-300
-            ${ currentPage === number && "bg-black text-yellow-300"}`} 
-            onClick={() => handleOnClickPage(number)}>
-            {number}
-            </button>
-          </li>
-        )}
-      </ul>
+        <button className={`${buttonClass}`}
+          onClick={() => handleNextPage()}>
+          Next Page
+        </button>
+      </div>
 
-      <button className={`${buttonClass}`}
-      onClick={() => handleNextPage()}>
-      Next Page
-      </button>
+      <div className='flex flex-row justify-center mb-4'>
+        <p className='flex items-end font-semibold'>Usuarios por página</p>
+        <input
+          className="border border-gray-800 px-1 rounded outline-none mx-4 text-black"
+          type="number"
+          name="usersPerPage"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+        />
+        <button onClick={() => handleInputValue(inputValue)}
+          className={`${buttonClass}`}
+        >Confirm</button>
+      </div>
     </div>
   )
 }

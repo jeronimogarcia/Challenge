@@ -10,22 +10,19 @@ let usersList = require('./data/users.json')
 // Copia original del array
 const originalList = [...usersList]
 
-// Máximo de users por página
-const maxUsers = 10
-
 // Número máximo de páginas
-const pages = []
-for (let i = 1; i <= Math.ceil(usersList.length / maxUsers); i++) {
-    pages.push(i)
-}
+// const pages = []
+// for (let i = 1; i <= Math.ceil(usersList.length / maxUsers); i++) {
+//     pages.push(i)
+// }
 
 // Creamos el objeto de respueta con el array y el numero máximo de páginas
-const responseObject = {
-    users: usersList,
-    size: pages
-}
+// const responseObject = {
+//     users: usersList,
+//     size: pages
+// }
 
-app.get("/users/:page?/:orderKey?/:order?", (req, res) => {
+app.get("/users/:page?/:usersPerPage?:orderKey?/:order?", (req, res) => {
 
     // Parse URL elements
     const queryObject = url.parse(req.url);
@@ -35,12 +32,13 @@ app.get("/users/:page?/:orderKey?/:order?", (req, res) => {
     const qs = queryObject.query;
     const stringQuery = querystring.parse(qs)
 
-    // console.log(stringQuery)
+    console.log(stringQuery)
 
     // Valores de los query (número de página, key del ordenamiento y forma de ordenamiento: ascendente o descendente)
     const page = stringQuery.page
     const key = stringQuery.orderKey
     const order = stringQuery.order
+    const usersPerPage = stringQuery.usersPerPage
 
     // Función de ordenamiento dependiendo la key que recibe 
     if (key) {
@@ -62,18 +60,35 @@ app.get("/users/:page?/:orderKey?/:order?", (req, res) => {
     }
 
     // Multiplicador de página * máximo de users por página. Ejemplo, pagina 2 = 20
-    const multiplier = page * maxUsers
+    const multiplier = page * usersPerPage
     // Index final donde cortar el array
     const end = multiplier
     // Index inicial de donde arranca el array
-    const start = multiplier - maxUsers
-    // Cortamos el array para mostrar 10 usuarios dependiendo la página
+    const start = multiplier - usersPerPage
+
+    const pages = []
+    for (let i = 1; i <= Math.ceil(usersList.length / usersPerPage); i++) {
+        pages.push(i)
+    }
+    
+    // Creamos el objeto de respueta con el array y el numero máximo de páginas
+    const responseObject = {
+        users: usersList,
+        size: pages
+
+    }
+
+    // Cortamos el array para mostrar los usuarios dependiendo la página y su máximo
     const newObject = usersList.slice(start, end)
     // Modificamos el objeto de respueta con el array cortado
     responseObject.users = newObject
 
-    // Pasamos el total máximo de páginas
+    // Página actual
     responseObject.page = page
+
+    if (pages.length < page) {
+        responseObject.page = pages.length
+    }
 
     res.json({ responseObject })
 })
