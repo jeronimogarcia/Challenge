@@ -8,7 +8,7 @@ const TableUsersRow = ({ user }) => {
   }
 
   return (
-    <tr className='border-t-2 border-colorLogo'>
+    <tr className='border-t-2 border-colorLogo font-medium'>
       <td><img className='h-[50px] my-[2px]' src={user.avatar} alt="Foto de Avatar" /></td>
       <td>{user.name}</td>
       <td>{user.surname}</td>
