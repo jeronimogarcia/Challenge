@@ -2,8 +2,18 @@ import React, { useEffect, useState } from 'react'
 import Pagination from './Pagination'
 import TableFormat from './TableFormat'
 
-let urlParam = parseInt(window.location.pathname.split('/')[2])
-const urlPage = (urlParam < 1 || urlParam > 10) || !urlParam ? 1 : urlParam
+const getUrlPageParam = parseInt(window.location.pathname.split('/')[2])
+const pageUrl = (getUrlPageParam < 1 || getUrlPageParam > 10) || !getUrlPageParam ? 1 : getUrlPageParam
+
+const getUrlLimitParam = parseInt(window.location.pathname.split('/')[3])
+const limitUrl = (getUrlLimitParam < 10) || !getUrlLimitParam ? 10 : getUrlLimitParam
+
+const getUrlKeyParam = (window.location.pathname.split('/')[4]?.split('=')[0])
+const keyUrl = (getUrlKeyParam === 'name' || getUrlKeyParam === 'surname' || getUrlKeyParam === 'createAt') ? getUrlKeyParam : ''
+
+const getUrlOrderParam = window.location.pathname.split('/')[4]?.split('=')[1]
+const orderUrl = (getUrlOrderParam === 'asc'|| getUrlOrderParam === 'dsc' ? getUrlOrderParam : '')
+
 // TODO Try to find a better way. Hardcoded
 
 const minNumberOfUsersPerPage = 9
@@ -12,11 +22,11 @@ const UsersTable = () => {
 
   const [usersList, setUsersList] = useState([])
   const [numberOfPages, setNumberOfPages] = useState([])
-  const [currentPage, setCurrentPage] = useState(urlPage)
-  const [key, setKey] = useState('')
-  const [order, setOrder] = useState('')
+  const [currentPage, setCurrentPage] = useState(pageUrl)
+  const [key, setKey] = useState(keyUrl)
+  const [order, setOrder] = useState(orderUrl)
   const [orderToogle, setOrderToogle] = useState(null)
-  const [inputNumber, setInputNumber] = useState(10)
+  const [inputNumber, setInputNumber] = useState(limitUrl)
   const [isLoading, setIsLoading] = useState(false)
 
   const handlePrevPage = () => {
@@ -32,10 +42,10 @@ const UsersTable = () => {
   }
 
   const handleOnClickPage = (number) => {
-      setCurrentPage(number)
+    setCurrentPage(number)
   }
 
-  const handleOrderName = (keyName, orderName, toogleNumber) => {
+  const handleOrderName = (keyName, orderName, toogleOrder) => {
     if (orderName === order && keyName === key) {
       setKey('')
       setOrder('')
@@ -43,13 +53,13 @@ const UsersTable = () => {
     } else {
       setKey(keyName)
       setOrder(orderName)
-      setOrderToogle(toogleNumber)
+      setOrderToogle(toogleOrder)
     }
   }
 
-  const handleInputValue = (numberOfUsersPerPage) =>{
+  const handleInputValue = (numberOfUsersPerPage) => {
     if (numberOfUsersPerPage > minNumberOfUsersPerPage)
-    setInputNumber(numberOfUsersPerPage)
+      setInputNumber(numberOfUsersPerPage)
   }
 
 
@@ -63,10 +73,10 @@ const UsersTable = () => {
         handleOnClickPage(parseInt(data.responseObject.page))
         window.history.replaceState(null, null, `/users/${data.responseObject.page}/${data.responseObject.usersPerPage}${key && `/${key}=${order}`}`)
       })
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
-      
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+
   }, [currentPage, key, order, inputNumber])
 
   return (
@@ -77,13 +87,14 @@ const UsersTable = () => {
         handleNextPage={handleNextPage}
         handleOnClickPage={handleOnClickPage}
         currentPage={currentPage}
-        handleInputValue = {handleInputValue}
-        isLoading = {isLoading}
+        handleInputValue={handleInputValue}
+        isLoading={isLoading}
+        inputNumber={inputNumber}
       />
-      <TableFormat 
-      usersList = {usersList}
-      handleOrderName = {handleOrderName}  
-      orderToogle = {orderToogle}
+      <TableFormat
+        usersList={usersList}
+        handleOrderName={handleOrderName}
+        orderToogle={orderToogle}
       />
     </div>
   )

@@ -8,10 +8,12 @@ const Pagination = ({
   handleNextPage, 
   handleOnClickPage, 
   currentPage, 
-  handleInputValue, 
-  isLoading }) => {
+  handleInputValue,
+  inputNumber,
+  isLoading
+  }) => {
 
-  const [inputValue, setInputValue] = useState(10)
+  const [inputValue, setInputValue] = useState(inputNumber)
 
   return (
     <div className='flex flex-col w-[60%]'>
