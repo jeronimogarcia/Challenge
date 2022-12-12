@@ -25,7 +25,7 @@ const UsersTable = () => {
   const [currentPage, setCurrentPage] = useState(pageUrl)
   const [key, setKey] = useState(keyUrl)
   const [order, setOrder] = useState(orderUrl)
-  const [orderToogle, setOrderToogle] = useState(null)
+  const [orderToogle, setOrderToogle] = useState(`${keyUrl}${orderUrl}`)
   const [inputNumber, setInputNumber] = useState(limitUrl)
   const [isLoading, setIsLoading] = useState(false)
 

@@ -16,14 +16,14 @@ const TableFormat = ({ usersList, orderToogle, handleOrderName }) => {
             <span>Name</span>
             <button className='mx-1 relative top-[2px]'>
               <BsFillArrowUpSquareFill
-                onClick={() => handleOrderName("name", "asc", 'nameAsc')}
-                className={`${iconClass} ${orderToogle === 'nameAsc' && iconToogle}`}
+                onClick={() => handleOrderName("name", "asc", 'nameasc')}
+                className={`${iconClass} ${orderToogle === 'nameasc' && iconToogle}`}
               />
             </button>
             <button className='relative top-[2px]'>
               <BsFillArrowDownSquareFill
-                onClick={() => handleOrderName("name", "dsc", 'nameDsc')}
-                className={`${iconClass} ${orderToogle === 'nameDsc' && iconToogle}`} />
+                onClick={() => handleOrderName("name", "dsc", 'namedsc')}
+                className={`${iconClass} ${orderToogle === 'namedsc' && iconToogle}`} />
             </button>
           </th>
 
@@ -31,13 +31,13 @@ const TableFormat = ({ usersList, orderToogle, handleOrderName }) => {
             <span>Surname</span>
             <button className='mx-1 relative top-[2px]'>
               <BsFillArrowUpSquareFill
-                onClick={() => handleOrderName("surname", "asc", 'surnameAsc')}
-                className={`${iconClass} ${orderToogle === 'surnameAsc' && iconToogle}`} />
+                onClick={() => handleOrderName("surname", "asc", 'surnameasc')}
+                className={`${iconClass} ${orderToogle === 'surnameasc' && iconToogle}`} />
             </button>
             <button>
               <BsFillArrowDownSquareFill
-                onClick={() => handleOrderName("surname", "dsc", 'surnameDsc')}
-                className={`relative top-[2px] ${iconClass} ${orderToogle === 'surnameDsc' && iconToogle}`} />
+                onClick={() => handleOrderName("surname", "dsc", 'surnameasc')}
+                className={`relative top-[2px] ${iconClass} ${orderToogle === 'surnamedsc' && iconToogle}`} />
             </button>
           </th>
 
@@ -45,13 +45,13 @@ const TableFormat = ({ usersList, orderToogle, handleOrderName }) => {
             <span> Register Date</span>
             <button className='mx-1 relative top-[2px]'>
               <BsFillArrowUpSquareFill
-                onClick={() => handleOrderName("createdAt", "asc", 'dateAsc')}
-                className={`${iconClass} ${orderToogle === 'dateAsc' && iconToogle}`} />
+                onClick={() => handleOrderName("createdAt", "asc", 'createAtasc')}
+                className={`${iconClass} ${orderToogle === 'createAtasc' && iconToogle}`} />
             </button>
             <button className='relative top-[2px]'>
               <BsFillArrowDownSquareFill
-                onClick={() => handleOrderName("createdAt", "dsc", 'dateDsc')}
-                className={`${iconClass} ${orderToogle === 'dateDsc' && iconToogle}`} />
+                onClick={() => handleOrderName("createdAt", "dsc", 'createAtdsc')}
+                className={`${iconClass} ${orderToogle === 'createAtdsc' && iconToogle}`} />
             </button>
           </th>
         </tr>
